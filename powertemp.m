@@ -52,4 +52,4 @@ N = cell2mat(textscan(headerArray{1}{5}, 'Number of samples averaged = %f'));
 coeffCal = cell2mat(textscan(headerArray{1}{6}, 'Power Calibration (a0...aN): %f%f%f%f'));
 
 % Clear temporary variables
-clearvars filename delimiter startRow formatSpec fileID dataArray headerArray ans;
+%clearvars filename delimiter startRow formatSpec fileID dataArray headerArray ans;
