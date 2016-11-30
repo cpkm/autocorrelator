@@ -247,9 +247,9 @@ set(handles.t2vDisp, 'String', num2str(tmp2Vlt,'%.4f'));
 if pwrVlt <= 0.01
    curPow = 0; 
 elseif pwrVlt < 5.014
-    curPow = polyval(fliplr(handles.pwrCalCoef),pwrVlt);
+    curPow = polyval(handles.pwrCalCoef,pwrVlt);
 else
-    curPow = polyval(fliplr(handles.pwrEstCoef),pscVlt);
+    curPow = polyval(handles.pwrEstCoef,pscVlt);
 end
 
 powStr = num2str(curPow,'%.1f');
@@ -259,7 +259,7 @@ set(handles.pwrDisp, 'String', powStr);
 if pscVlt <0.002
     curPsc = 0;
 else
-    curPsc = polyval(fliplr(handles.pscCalCoef), pscVlt);
+    curPsc = polyval(handles.pscCalCoef, pscVlt);
 end
 
 pscStr = num2str(curPsc,'%4.2f');
@@ -391,6 +391,33 @@ else
 end
 
 
+function setCalibration(mainFigure)
+    %This function sets the power calibration coefficients based on the set temperature
+    $%mainFigure = main figure handle
+    %output = [a3, a2, a1, a0]
+
+handles = guidata(mainFigure);
+
+temp = handles.('setTempBox')
+
+cal_temp = [20,25,30,35]
+%a3,a2,a1,a0
+cal_coef = [...
+    [0.3905250144, -3.401362994, 26.70952837, 0.9935367105],...
+    [0.4286940672, -3.881127898, 26.58477872, 0.1994011716],...
+    [0.3739759038, -2.827344471, 21.78657583, 0.916108326],...
+    [0.3451878422, -2.234112458, 19.82081582, 1.052686614]];
+
+output_coef = zeros(size(cal_coef,2));
+for i = 1:numel(output_coef)
+    output_coef(i) = interp(cal_coef(i),cal_temp,temp)
+end
+
+handles.pwrCalCoef = output_coef
+
+guidata(mainFigure,handles)
+
+
 % --- End user functions
 
 
@@ -407,8 +434,8 @@ handles.output = hObject;
 
 % Update handles structure, set 'global' parameters
 handles.pwrCalCoef = [0.4315403228 28.14068064 -3.770681968 0.4096289863];   %power cal coeffs, calc power from monitor voltage, a0 a1...
-handles.pwrEstCoef = [-11.93860021 30.76897313];    %power estimate coeffs, calc power from current mon voltage, a0 a1...
-handles.pscCalCoef = [0.009309869398 5.977168596];  %curent power supply cal coeffs, a0 a1...	
+handles.pwrEstCoef = [30.76897313 -11.93860021];    %power estimate coeffs, calc power from current mon voltage, a0 a1...
+handles.pscCalCoef = [5.977168596 0.009309869398];  %curent power supply cal coeffs, a0 a1...	
 handles.crvWrn = 0.8;               %crv Warning level
 handles.crvDng = 1;                 %crv Danger level
 handles.tmp1Cal = 0.00499;          %temp1 calibration, V/degC
