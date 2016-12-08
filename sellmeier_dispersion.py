@@ -19,7 +19,7 @@ c = 299792458.0     #m/s
 l0 = 1.03E-6
 w0 = 2*np.pi*c/l0
 
-orders = 7
+orders = 5
 beta = np.zeros(orders+1,)
    
 B =  np.array([1.03961212,0.231792344,1.01046945])
