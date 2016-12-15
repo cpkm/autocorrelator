@@ -92,4 +92,55 @@ def transBeamSize(GDD, N, AOI, lambda0, dlambda):
     
     return dxMax
     
+def litAngle(N, lambda0):
     
+    d = 1E-3/N
+    a = (180/np.pi)*np.arcsin(lambda0/(2*d))
+    
+    return a
+    
+
+aoi = np.linspace(0,90,50)
+l0 = 1030E-9
+dl = 10E-9
+gdd = 37E-24
+
+n = 1200
+
+l,lr = gdd2len(gdd,n,aoi,l0)
+x = transBeamSize(gdd,n,aoi,l0,dl)
+da = diffAngle(n,aoi,l0)
+xr = x/np.cos(da*np.pi/180)
+
+plt.figure(0)
+plt.plot(aoi,l,'--',aoi,lr,'-')
+
+plt.figure(1)
+plt.plot(aoi,x,'--',aoi,xr,'-')
+
+
+
+n = 1500
+l,lr = gdd2len(gdd,n,aoi,l0)
+x = transBeamSize(gdd,n,aoi,l0,dl)
+da = diffAngle(n,aoi,l0)
+xr = x/np.cos(da*np.pi/180)
+
+plt.figure(0)
+plt.plot(aoi,l,'--',aoi,lr,'-')
+
+plt.figure(1)
+plt.plot(aoi,x,'--',aoi,xr,'-')
+
+
+n = 1760
+l,lr = gdd2len(gdd,n,aoi,l0)
+x = transBeamSize(gdd,n,aoi,l0,dl)
+da = diffAngle(n,aoi,l0)
+xr = x/np.cos(da*np.pi/180)
+
+plt.figure(0)
+plt.plot(aoi,l,'--',aoi,lr,'-')
+
+plt.figure(1)
+plt.plot(aoi,x,'--',aoi,xr,'-')
