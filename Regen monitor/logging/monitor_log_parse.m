@@ -1,5 +1,5 @@
-fileMon = 'D:\Miller Group Users\Kyle\2016-05-12 power log\2016-11-22 MON temperature profile 90W.txt';
-filePow = 'D:\Miller Group Users\Kyle\2016-05-12 power log\2016-11-22 PM100 voltagemon.txt';
+fileMon = '/Users/cpkmanchee/Google Drive/PhD/Data/2017-01-17 Oscillator power stability/2017-01-17 RM log.txt';
+filePow = '/Users/cpkmanchee/Google Drive/PhD/Data/2017-01-17 Oscillator power stability/PM100_17-Jan-17_14-15.txt';
 
 %% Import Power meter data
 filename = filePow;
