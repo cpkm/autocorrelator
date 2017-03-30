@@ -22,7 +22,7 @@ function varargout = regen_monitor(varargin)
 
 % Edit the above text to modify the response to help regen_monitor
 
-% Last Modified by GUIDE v2.5 04-Aug-2016 12:04:47
+% Last Modified by GUIDE v2.5 30-Nov-2016 11:23:29
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -393,29 +393,26 @@ end
 
 function setCalibration(mainFigure)
     %This function sets the power calibration coefficients based on the set temperature
-    $%mainFigure = main figure handle
+    %mainFigure = main figure handle
     %output = [a3, a2, a1, a0]
 
 handles = guidata(mainFigure);
 
-temp = handles.('setTempBox')
+temp = handles.diodeCalTemp;
 
-cal_temp = [20,25,30,35]
+cal_temp = [20,25,30,35];
 %a3,a2,a1,a0
 cal_coef = [...
-    [0.3905250144, -3.401362994, 26.70952837, 0.9935367105],...
-    [0.4286940672, -3.881127898, 26.58477872, 0.1994011716],...
-    [0.3739759038, -2.827344471, 21.78657583, 0.916108326],...
+    [0.3905250144, -3.401362994, 26.70952837, 0.9935367105];...
+    [0.4286940672, -3.881127898, 26.58477872, 0.1994011716];...
+    [0.3739759038, -2.827344471, 21.78657583, 0.916108326];...
     [0.3451878422, -2.234112458, 19.82081582, 1.052686614]];
 
-output_coef = zeros(size(cal_coef,2));
-for i = 1:numel(output_coef)
-    output_coef(i) = interp(cal_coef(i),cal_temp,temp)
-end
+output_coef = interp1(cal_temp,cal_coef,temp, 'linear', 'extrap');
 
-handles.pwrCalCoef = output_coef
+handles.pwrCalCoef = output_coef;
 
-guidata(mainFigure,handles)
+guidata(mainFigure,handles);
 
 
 % --- End user functions
@@ -436,6 +433,8 @@ handles.output = hObject;
 handles.pwrCalCoef = [0.4315403228 28.14068064 -3.770681968 0.4096289863];   %power cal coeffs, calc power from monitor voltage, a0 a1...
 handles.pwrEstCoef = [30.76897313 -11.93860021];    %power estimate coeffs, calc power from current mon voltage, a0 a1...
 handles.pscCalCoef = [5.977168596 0.009309869398];  %curent power supply cal coeffs, a0 a1...	
+handles.diodeCalTemp = 35;                %temperature for diode calibration
+
 handles.crvWrn = 0.8;               %crv Warning level
 handles.crvDng = 1;                 %crv Danger level
 handles.tmp1Cal = 0.00499;          %temp1 calibration, V/degC
@@ -465,6 +464,7 @@ end
 %set(findall(handles.cryPanel, '-property', 'enable'), 'enable', 'off')
 
 guidata(hObject, handles);
+setCalibration(handles.figure1);
 
 % UIWAIT makes regen_monitor wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -643,3 +643,38 @@ set(handles.logFilename,'String',[pathName,fileName]);
 
 %run log checkbox callback to determine if filename is ok
 logCheck_Callback(handles.logCheck, eventdata, handles);
+
+
+
+function calTempEdit_Callback(hObject, eventdata, handles)
+% hObject    handle to calTempEdit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of calTempEdit as text
+%        str2double(get(hObject,'String')) returns contents of calTempEdit as a double
+
+temp = str2double(get(hObject,'String'));
+
+if isnan(temp)
+    set(hObject, 'String', num2str(handles.diodeCalTemp));
+else
+    handles.diodeCalTemp = temp;
+end
+
+guidata(handles.figure1,handles);
+setCalibration(handles.figure1);
+
+
+
+% --- Executes during object creation, after setting all properties.
+function calTempEdit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to calTempEdit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
