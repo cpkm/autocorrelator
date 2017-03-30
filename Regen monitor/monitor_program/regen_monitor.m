@@ -22,7 +22,7 @@ function varargout = regen_monitor(varargin)
 
 % Edit the above text to modify the response to help regen_monitor
 
-% Last Modified by GUIDE v2.5 30-Nov-2016 11:23:29
+% Last Modified by GUIDE v2.5 30-Mar-2017 18:30:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -236,6 +236,9 @@ tmp1Vlt = mean(event.Data(:,handles.tmp1Idx));
 tmp2Vlt = mean(event.Data(:,handles.tmp2Idx));
 pscVlt = mean(event.Data(:,handles.pscIdx));
 
+%pwr fluctuations instantaneous
+pwrVltStd = std(event.Data(:,handles.pwrIdx));
+
 %Updte raw Voltage Displays
 set(handles.dpvDisp, 'String', num2str(pwrVlt,'%.4f'));
 set(handles.dcvDisp, 'String', num2str(crvVlt,'%.4f'));
@@ -243,12 +246,18 @@ set(handles.pcvDisp, 'String', num2str(pscVlt,'%.4f'));
 set(handles.t1vDisp, 'String', num2str(tmp1Vlt,'%.4f'));
 set(handles.t2vDisp, 'String', num2str(tmp2Vlt,'%.4f'));
 
+cal2use = get(get(handles.calibrationPanel, 'SelectedObject'),'String');
+
 %Power display
 if pwrVlt <= 0.01
    curPow = 0; 
-elseif pwrVlt < 5.014
+elseif strcmpi(cal2use, 'Voltage')
     curPow = polyval(handles.pwrCalCoef,pwrVlt);
+elseif strcmpi(cal2use, 'Current')
+    curPow = polyval(handles.pwrEstCoef,pscVlt);
 else
+    %this is just a placeholder for now
+    display('Check calibration!!!!!')
     curPow = polyval(handles.pwrEstCoef,pscVlt);
 end
 
@@ -401,16 +410,30 @@ handles = guidata(mainFigure);
 temp = handles.diodeCalTemp;
 
 cal_temp = [20,25,30,35];
+%diode monitor voltage to power coeffs (calibrated)
 %a3,a2,a1,a0
-cal_coef = [...
-    [0.3905250144, -3.401362994, 26.70952837, 0.9935367105];...
-    [0.4286940672, -3.881127898, 26.58477872, 0.1994011716];...
-    [0.3739759038, -2.827344471, 21.78657583, 0.916108326];...
-    [0.3451878422, -2.234112458, 19.82081582, 1.052686614]];
+voltage_cal_coef = [...
+    [0.09364815449 -1.303392134 22.00926798 2.175942706];...
+    [0.3715309952 -3.340790084 24.86181978 0.7029328495];...
+    [0.487521366 -3.639501926 23.90466826 0.262408398];...
+    [0.3162068009 -2.021543564 20.24440997 1.148156743]];
 
-output_coef = interp1(cal_temp,cal_coef,temp, 'linear', 'extrap');
+%current to power coeffs (calibrated)
+current_cal_coef = [...
+    [4.612008094 -9.575995553];...
+    [4.478570276 -9.753289314];...
+    [4.416482464 -10.57545691];...
+    [4.396149062 -11.30721815]];
 
-handles.pwrCalCoef = output_coef;
+%power supply monitor voltage to current (calibrated)
+psc_cal_coef = handles.pscCalCoef;
+
+output_voltage_coef = interp1(cal_temp,voltage_cal_coef,temp, 'linear', 'extrap');
+current_coef = interp1(cal_temp,current_cal_coef,temp, 'linear', 'extrap');
+%calculate coeff for direct psmv2power (don't calc curent explicitly)
+output_current_coef = [current_coef(1)*psc_cal_coef(1), current_coef(2)+current_coef(1)*psc_cal_coef(2)];
+handles.pwrCalCoef = output_voltage_coef;
+handles.pwrEstCoef = output_current_coef;
 
 guidata(mainFigure,handles);
 
@@ -430,9 +453,9 @@ function regen_monitor_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 
 % Update handles structure, set 'global' parameters
-handles.pwrCalCoef = [0.4315403228 28.14068064 -3.770681968 0.4096289863];   %power cal coeffs, calc power from monitor voltage, a0 a1...
-handles.pwrEstCoef = [30.76897313 -11.93860021];    %power estimate coeffs, calc power from current mon voltage, a0 a1...
-handles.pscCalCoef = [5.977168596 0.009309869398];  %curent power supply cal coeffs, a0 a1...	
+handles.pwrCalCoef = [0.4315403228 28.14068064 -3.770681968 0.4096289863];   %power cal coeffs, calc power from monitor voltage, an an-1...
+handles.pwrEstCoef = [30.76897313 -11.93860021];    %power estimate coeffs, calc power from current mon voltage, a1 a0
+handles.pscCalCoef = [5.977168596 0.009309869398];  %curent power supply cal coeffs, a1 a0	
 handles.diodeCalTemp = 35;                %temperature for diode calibration
 
 handles.crvWrn = 0.8;               %crv Warning level
@@ -678,3 +701,15 @@ function calTempEdit_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes when selected object is changed in calibrationPanel.
+function calibrationPanel_SelectionChangeFcn(hObject, eventdata, handles)
+% hObject    handle to the selected object in calibrationPanel 
+% eventdata  structure with the following fields (see UIBUTTONGROUP)
+%	EventName: string 'SelectionChanged' (read only)
+%	OldValue: handle of the previously selected object or empty if none was selected
+%	NewValue: handle of the currently selected object
+% handles    structure with handles and user data (see GUIDATA)
+
+%get(handles.calibrationPanel, 'Value')
