@@ -21,7 +21,7 @@ wavelength = data[:,0]
 intensity = data[:,1]-data[:,1].min()
 
 wl1 = 1045
-wl2 = 935
+wl2 = 995
 
 ind1 = (np.abs(wl1-wavelength)).argmin()
 ind2 = (np.abs(wl2-wavelength)).argmin()
