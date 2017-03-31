@@ -102,7 +102,7 @@ def litAngle(N, lambda0):
 
 aoi = np.linspace(0,90,50)
 l0 = 1030E-9
-dl = 10E-9
+dl = 5E-9
 gdd = 37E-24
 
 n = 1200
@@ -118,6 +118,8 @@ plt.plot(aoi,l,'--',aoi,lr,'-')
 plt.figure(1)
 plt.plot(aoi,x,'--',aoi,xr,'-')
 
+plt.figure(2)
+plt.plot(aoi,da,'-')
 
 
 n = 1500
@@ -132,6 +134,9 @@ plt.plot(aoi,l,'--',aoi,lr,'-')
 plt.figure(1)
 plt.plot(aoi,x,'--',aoi,xr,'-')
 
+plt.figure(2)
+plt.plot(aoi,da,'-')
+
 
 n = 1760
 l,lr = gdd2len(gdd,n,aoi,l0)
@@ -144,3 +149,6 @@ plt.plot(aoi,l,'--',aoi,lr,'-')
 
 plt.figure(1)
 plt.plot(aoi,x,'--',aoi,xr,'-')
+
+plt.figure(2)
+plt.plot(aoi,da,'-')
