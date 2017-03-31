@@ -257,7 +257,7 @@ elseif strcmpi(cal2use, 'Current')
     curPow = polyval(handles.pwrEstCoef,pscVlt);
 else
     %this is just a placeholder for now
-    display('Check calibration!!!!!')
+    display('Check calibration!!! Wrong part of calibration ifs')
     curPow = polyval(handles.pwrEstCoef,pscVlt);
 end
 
@@ -274,16 +274,15 @@ end
 pscStr = num2str(curPsc,'%4.2f');
 set(handles.pscDisp, 'String', pscStr);
 
-%Crossover display
-curCrv = (crvVlt/4.0);
-
-if curCrv >= handles.crvDng 
-   crvCol = handles.dngCol;    %danger, red color
-elseif curCrv >= handles.crvWrn
-    crvCol = handles.wrnCol;   %warning, yellow
-else
-    crvCol = handles.safeCol;   %safe, green
-end
+%Crossover display, changing to 'noise'
+curCrv = curPow*(pwrVltStd/pwrVlt);
+%if curCrv >= handles.crvDng 
+%   crvCol = handles.dngCol;    %danger, red color
+%elseif curCrv >= handles.crvWrn
+%    crvCol = handles.wrnCol;   %warning, yellow
+%else
+%    crvCol = handles.safeCol;   %safe, green
+%end
 
 crvStr = num2str(curCrv,'%.4f'); 
 set(handles.crvDisp, 'String', crvStr);
