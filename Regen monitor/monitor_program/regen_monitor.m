@@ -22,7 +22,7 @@ function varargout = regen_monitor(varargin)
 
 % Edit the above text to modify the response to help regen_monitor
 
-% Last Modified by GUIDE v2.5 30-Mar-2017 18:30:50
+% Last Modified by GUIDE v2.5 31-Mar-2017 15:51:42
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -276,6 +276,7 @@ set(handles.pscDisp, 'String', pscStr);
 
 %Crossover display, changing to 'noise'
 curCrv = curPow*(pwrVltStd/pwrVlt);
+
 %if curCrv >= handles.crvDng 
 %   crvCol = handles.dngCol;    %danger, red color
 %elseif curCrv >= handles.crvWrn
@@ -285,8 +286,8 @@ curCrv = curPow*(pwrVltStd/pwrVlt);
 %end
 
 crvStr = num2str(curCrv,'%.4f'); 
-set(handles.crvDisp, 'String', crvStr);
-set(handles.crvDisp, 'ForegroundColor', crvCol);
+set(handles.dnpDisp, 'String', crvStr);
+%set(handles.dnpDisp, 'ForegroundColor', crvCol);
 
 %Temperature 1 display
 curTmp1 = (tmp1Vlt - handles.tmp1Ofs)/handles.tmp1Cal;
