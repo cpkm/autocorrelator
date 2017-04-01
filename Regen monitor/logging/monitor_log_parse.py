@@ -13,7 +13,7 @@ import csv
 import pickle
 
 
-file_format = {'regen_monitor': 
+file_formats = {'regen_monitor': 
                 {'alias': ['regen_monitor','regen','monitor','mon'],
                  'header_lines': 9,
                  'number_data_columns': 6,
@@ -45,22 +45,8 @@ file_format = {'regen_monitor':
                  'column_units': ['mm', 'W'],
                  'delimiter': '\t',
                  }
-
             }
-
-
-
-#w = csv.writer(open("file_formats.csv", "w"))
-#for key, val in file_formats.items():
-#    w.writerow([key, val]) 
-with open('file_format.pkl', 'wb') as f:
-    pickle.dump(file_format,f)
-quit()
-file_formats = {}
-for key, val in csv.reader(open("file_formats.csv")):
-    file_formats[key] = val 
-
-print(file_formats)               
+            
                 
 def filetype_lookup(file_dict, given_type):
     '''Identify file type for given input. Only first found match is returned.
