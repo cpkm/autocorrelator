@@ -1,0 +1,130 @@
+<deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
+  <configuration build-checksum="3997092033" file="D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor.prj" location="D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program" name="regen_monitor" preferred-package-location="D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="MATLAB Compiler for Standalone Applications">
+    <param.appname>regen_monitor</param.appname>
+    <param.icon>${PROJECT_ROOT}\regen_monitor_resources\icon.ico</param.icon>
+    <param.icons>
+      <file>${PROJECT_ROOT}\regen_monitor_resources\icon_48.png</file>
+      <file>${PROJECT_ROOT}\regen_monitor_resources\icon_32.png</file>
+      <file>${PROJECT_ROOT}\regen_monitor_resources\icon_24.png</file>
+      <file>${PROJECT_ROOT}\regen_monitor_resources\icon_16.png</file>
+    </param.icons>
+    <param.version>1.6</param.version>
+    <param.authnamewatermark>Kyle Manchee</param.authnamewatermark>
+    <param.email>kmanchee@physics.utoronto.ca</param.email>
+    <param.company>Miller Group</param.company>
+    <param.summary>Monitor REGEN pump power and temperatures.</param.summary>
+    <param.description>This app serves a a monitor for the REGEN amplifier. Outputs inlude pump power, backreflection, and temperatures of the crystal and pump diode.
+1.0: 2016/02/22 First compiled version.
+1.1: 2016/03/22 Updated power monitor voltage conversion. Added pumpVlt2Pwr() function for voltage to power conversion. Added time-of-day (TOD).
+1.2 2016/04/20 Fixed logging bug. Improved logging format; included full date and time. Updated log and pumpVlt2Pwr() such that power calibration values are stored and accesed from handles structure.
+1.3 2016/08/04 Updated DAQ channels to handle new inputs. Added power supply current monitoring. Removed pumpVlt2Pwr(). Updated power calibration. New display to show raw input voltages from DAQ. Updated logging.
+1.4 2016/11/04 New temp settings, faster refresh rate
+2016/11/17 Updated high power calibration (matched at crossover)
+2016/11/22 Updated logging (decoupled from refreshrate)
+1.5 2016/11/30 moved files to git repository. created temperature adjustable calibration
+1.6 2017/03/31 Updated GUI. Included power fluctuations. Removed crossover. Added current calibration implementation. Updated pump calibrations.</param.description>
+    <param.screenshot>${PROJECT_ROOT}\regen_monitor_splash.jpeg</param.screenshot>
+    <param.guid />
+    <param.installpath.string>\Miller Group\regen_monitor\</param.installpath.string>
+    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.logo />
+    <param.install.notes />
+    <param.intermediate>${PROJECT_ROOT}\regen_monitor\for_testing</param.intermediate>
+    <param.output>${PROJECT_ROOT}\regen_monitor\for_redistribution</param.output>
+    <param.user.defined.mcr.options />
+    <param.embed.ctf>true</param.embed.ctf>
+    <param.server.ctf>${PROJECT_ROOT}\regen_monitor\for_testing\.ctf</param.server.ctf>
+    <param.server.readme>${PROJECT_ROOT}\regen_monitor\for_testing\readme.txt</param.server.readme>
+    <param.target.type>subtarget.standalone</param.target.type>
+    <param.support.packages />
+    <param.web.mcr>true</param.web.mcr>
+    <param.package.mcr>true</param.package.mcr>
+    <param.no.mcr>false</param.no.mcr>
+    <param.web.mcr.name>regen_monitor_setup_web</param.web.mcr.name>
+    <param.package.mcr.name>regen_monitor_setup</param.package.mcr.name>
+    <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
+    <param.windows.command.prompt>true</param.windows.command.prompt>
+    <param.create.log>false</param.create.log>
+    <param.log.file />
+    <unset>
+      <param.authnamewatermark />
+      <param.email />
+      <param.guid />
+      <param.installpath.string />
+      <param.installpath.combo />
+      <param.logo />
+      <param.install.notes />
+      <param.intermediate />
+      <param.output />
+      <param.user.defined.mcr.options />
+      <param.embed.ctf />
+      <param.server.ctf />
+      <param.server.readme />
+      <param.target.type />
+      <param.support.packages />
+      <param.web.mcr />
+      <param.no.mcr />
+      <param.no.mcr.name />
+      <param.windows.command.prompt />
+      <param.create.log />
+      <param.log.file />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\regen_monitor.m</file>
+    </fileset.main>
+    <fileset.resources>
+      <file>${PROJECT_ROOT}\regen_monitor.fig</file>
+    </fileset.resources>
+    <fileset.package />
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}\regen_monitor\for_testing" name="readme.txt" optional="true">D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}\regen_monitor\for_testing" name="regen_monitor.exe" optional="false">D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_testing\regen_monitor.exe</file>
+      <file location="${PROJECT_ROOT}\regen_monitor\for_testing" name="splash.png" optional="false">D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_testing\splash.png</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2014a</root>
+      <toolboxes>
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="fixedpoint" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="matlabcoder" />
+      </toolboxes>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>6.2</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

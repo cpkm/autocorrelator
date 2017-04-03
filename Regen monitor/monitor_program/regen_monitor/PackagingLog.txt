@@ -1,0 +1,61 @@
+ant:
+<ant>
+  <mkdir dir="D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_redistribution" />
+  <mkdir dir="D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_testing" />
+</ant>
+mcc -C -o regen_monitor -W WinMain:regen_monitor -T link:exe -d 'D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_testing' -v 'D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor.m' -a 'D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor.fig' 
+Compiler version: 5.1 (R2014a)
+Dependency analysis by REQUIREMENTS.
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\coder\simulinkcoder\cgv\API] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\matlab\winfun\NET] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\rtw\targets\AUTOSAR\AUTOSAR] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\rtw\targets\AUTOSAR\AUTOSAR\dataclasses] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\simulink\simulink\MPlayIO] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\slvnv\reqmgt\RTExplorer] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Requirements cannot analyze P-code unless the user provides a
+corresponding M-code along with the P-code in the same folder. The dependencies
+of D:\Miller Group Users\Kyle\Code Projects\misc\Regen
+monitor\monitor_program\regen_monitor.fig may not be included in the completion
+because its corresponding M-code cannot be found by REQUIREMENTS.] 
+[> In MatlabSymbol>MatlabSymbol.findCorrespondentMCode at 975
+  In Completion>Completion.initializeRootSet at 1275
+  In Completion>Completion.Completion at 1860
+  In requirements at 182] 
+[Warning: Adding path "D:\Miller Group Users\Kyle\Code Projects\misc\Regen
+monitor\monitor_program" to Compiler path instance.] 
+Parsing file "D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\Program Files\MATLAB\R2014a\toolbox\compiler\deploy\deployprint.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\Program Files\MATLAB\R2014a\toolbox\compiler\deploy\printdlg.m"
+	(Referenced from: "Compiler Command Line").
+Deleting 2 temporary MEX authorization files.
+Removing: 'C:\Users\MILLER~1\AppData\Local\Temp\mathworks_tmp_264_4635_264.auth'.
+Removing: 'C:\Users\MILLER~1\AppData\Local\Temp\mathworks_tmp_264_24952_264.auth'.
+Generating file "D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_testing\readme.txt".
+Packaging...
+Adding custom icon D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor_resources\icon.ico to D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_testing\regen_monitor.exe.
+Attempting to embed the CTF archive into the application D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_testing\regen_monitor.exe.
+Finished embedding CTF archive. Deleting the external CTF archive.
+Creating the bundle...
+Web based installer created at D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_redistribution\regen_monitor_setup_web.exe.
+Self contained installer created at D:\Miller Group Users\Kyle\Code Projects\misc\Regen monitor\monitor_program\regen_monitor\for_redistribution\regen_monitor_setup.exe.
+Packaging complete.
