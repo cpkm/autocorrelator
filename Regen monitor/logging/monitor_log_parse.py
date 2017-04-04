@@ -10,6 +10,7 @@ import scipy as sp
 import matplotlib.pyplot as plt
 import os
 import csv
+import pickle
 
 
 file_formats = {'regen_monitor': 
@@ -44,8 +45,8 @@ file_formats = {'regen_monitor':
                  'column_units': ['mm', 'W'],
                  'delimiter': '\t',
                  }
-            } 
-                
+            }
+            
                 
 def filetype_lookup(file_dict, given_type):
     '''Identify file type for given input. Only first found match is returned.
@@ -66,7 +67,7 @@ given_filetype = 'monitor'
 
 filetype = filetype_lookup(file_formats,given_filetype)
 if filetype is None:
-    raise RuntimeError("File type not found") from filetype
+    raise RuntimeError("File type lookup failed. File type not found") from filetype
 
 
 header_lines = file_formats.get(filetype).get('header_lines')
