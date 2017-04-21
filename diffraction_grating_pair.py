@@ -11,6 +11,7 @@ Diffraction grating pair
 
 import numpy as np
 import matplotlib.pyplot as plt
+import sympy as sym
 
 '''
 Simulate grating pair
@@ -37,7 +38,7 @@ def gdd2len(GDD, N, AOI, lambda0):
     w0 = 2*np.pi*c/lambda0
     theta = np.arcsin(m*2*np.pi*c/(w0*d) - np.sin(g))
 
-    L = np.abs(GDD*(d**2*w0**3*np.cos(theta)**3)/(-m**2*4*(np.pi**2)*c))
+    L = np.abs(GDD*(d**2*w0**3*np.cos(theta)**3)/(-m**2*4*4*(np.pi**2)*c))
 
     L_real = L/np.cos(theta)    
     
@@ -51,7 +52,7 @@ def beta2(N, AOI, lambda0):
     w0 = 2*np.pi*c/lambda0
     theta = np.arcsin(m*2*np.pi*c/(w0*d) - np.sin(g))
     
-    beta2 = (-m**2*4*(np.pi**2)*c)/(d**2*w0**3*np.cos(theta)**3)
+    beta2 = (-m**2*4*4*(np.pi**2)*c)/(d**2*w0**3*np.cos(theta)**3)
 
     return beta2
     
@@ -66,7 +67,7 @@ def dispCoef(L, N, AOI, lambda0):
     
     phi0 = 4*L*w0*np.cos(theta)/c
     phi1 = (phi0/w0)*(1+(2*np.pi*c*m*np.sin(theta)/(w0*d*np.cos(theta)**2)))
-    phi2 = (-m**2*4*(np.pi**2)*L*c/(d**2*w0**3))*(1/np.cos(theta)**3)
+    phi2 = (-m**2*4*4*(np.pi**2)*L*c/(d**2*w0**3))*(1/np.cos(theta)**3)
     phi3 = (-3*phi2/w0)*(1+(2*np.pi*c*m*np.sin(theta)/(w0*d*np.cos(theta)**2)))
     phi4 = ((2*phi3)**2/(3*phi2)) + phi2*(2*np.pi*c*m/(w0**2*d*np.cos(theta)**2))**2
     
@@ -98,8 +99,37 @@ def litAngle(N, lambda0):
     a = (180/np.pi)*np.arcsin(lambda0/(2*d))
     
     return a
-    
 
+def symDisp(L, N, AOI, lambda0):
+    m = 1
+    g = AOI*np.pi/180    #convert AOI into rad
+    d = 1E-3/N    #gives grove spacing in m
+
+    w0 = 2*np.pi*c/lambda0
+    #theta = np.arcsin(m*2*np.pi*c/(w0*d) - np.sin(g))
+    w = sym.symbols('w')  
+    
+    orders = 5
+    phi = np.zeros(orders)
+    
+    phi0 = 2*(2*L*w/c)*(1-(m*2*np.pi*c/(w*d) - sym.sin(g))**2)**(1/2)
+    
+    for i in range(orders):
+        phi[i] = sym.diff(phi0,w,i).subs(w,w0)
+        
+    return phi
+
+'''
+aoi = 13.89
+n=600
+lam=800E-9
+l0=0.01
+
+d0 = dispCoef(l0,n,aoi,lam)
+d1 = symDisp(l0,n,aoi,lam)
+
+print(d0,'\n',d1)
+'''
 aoi = np.linspace(0,90,50)
 l0 = 1030E-9
 dl = 10E-9
