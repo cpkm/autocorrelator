@@ -37,7 +37,7 @@ def gdd2len(GDD, N, AOI, lambda0):
     w0 = 2*np.pi*c/lambda0
     theta = np.arcsin(m*2*np.pi*c/(w0*d) - np.sin(g))
 
-    L = np.abs(GDD*(d**2*w0**3*np.cos(theta)**3)/(-m**2*2*4*(np.pi**2)*c))
+    L = np.abs(GDD*(d**2*w0**3*np.cos(theta)**3)/(-m**2*4*(np.pi**2)*c))
 
     L_real = L/np.cos(theta)    
     
@@ -51,7 +51,7 @@ def beta2(N, AOI, lambda0):
     w0 = 2*np.pi*c/lambda0
     theta = np.arcsin(m*2*np.pi*c/(w0*d) - np.sin(g))
     
-    beta2 = (-m**2*2*4*(np.pi**2)*c)/(d**2*w0**3*np.cos(theta)**3)
+    beta2 = (-m**2*4*(np.pi**2)*c)/(d**2*w0**3*np.cos(theta)**3)
 
     return beta2
     
@@ -66,7 +66,7 @@ def dispCoef(L, N, AOI, lambda0):
     
     phi0 = 4*L*w0*np.cos(theta)/c
     phi1 = (phi0/w0)*(1+(2*np.pi*c*m*np.sin(theta)/(w0*d*np.cos(theta)**2)))
-    phi2 = (-m**2*2*4*(np.pi**2)*L*c/(d**2*w0**3))*(1/np.cos(theta)**3)
+    phi2 = (-m**2*4*(np.pi**2)*L*c/(d**2*w0**3))*(1/np.cos(theta)**3)
     phi3 = (-3*phi2/w0)*(1+(2*np.pi*c*m*np.sin(theta)/(w0*d*np.cos(theta)**2)))
     phi4 = ((2*phi3)**2/(3*phi2)) + phi2*(2*np.pi*c*m/(w0**2*d*np.cos(theta)**2))**2
     
@@ -102,11 +102,10 @@ def litAngle(N, lambda0):
 
 aoi = np.linspace(0,90,50)
 l0 = 1030E-9
-dl = 5E-9
+dl = 10E-9
 gdd = 37E-24
 
 n = 1200
-
 l,lr = gdd2len(gdd,n,aoi,l0)
 x = transBeamSize(gdd,n,aoi,l0,dl)
 da = diffAngle(n,aoi,l0)
