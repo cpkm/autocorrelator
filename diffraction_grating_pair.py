@@ -130,7 +130,7 @@ d1 = symDisp(l0,n,aoi,lam)
 
 print(d0,'\n',d1)
 '''
-aoi = np.linspace(0,90,50)
+aoi = np.linspace(35,60,50)
 l0 = 1030E-9
 dl = 10E-9
 gdd = 37E-24
@@ -181,3 +181,11 @@ plt.plot(aoi,x,'--',aoi,xr,'-')
 
 plt.figure(2)
 plt.plot(aoi,da,'-')
+
+
+n=1500
+alpha = np.abs(diffAngle(n,aoi,l0)-aoi)
+l,lr = gdd2len(gdd,n,aoi,l0)
+x_allowed = lr*np.sin(alpha*np.pi/180)/2
+plt.figure(3)
+plt.plot(aoi,x_allowed)
