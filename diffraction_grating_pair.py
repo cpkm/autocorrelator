@@ -38,7 +38,7 @@ def gdd2len(GDD, N, AOI, lambda0):
     w0 = 2*np.pi*c/lambda0
     theta = np.arcsin(m*2*np.pi*c/(w0*d) - np.sin(g))
 
-    L = np.abs(GDD*(d**2*w0**3*np.cos(theta)**3)/(-m**2*4*4*(np.pi**2)*c))
+    L = np.abs(GDD*(d**2*w0**3*np.cos(theta)**3)/(-m**2*2*4*(np.pi**2)*c))
 
     L_real = L/np.cos(theta)    
     
@@ -119,7 +119,7 @@ def symDisp(L, N, AOI, lambda0):
         
     return phi
 
-
+'''
 aoi = 13.89
 n=600
 lam=800E-9
@@ -131,7 +131,7 @@ d1 = symDisp(l0,n,aoi,lam)
 print(d0,'\n',d1, '\n', beta2(n,aoi,lam))
 
 '''
-aoi = np.linspace(35,60,50)
+aoi = np.linspace(35,90,50)
 l0 = 1030E-9
 dl = 10E-9
 gdd = 37E-24
@@ -190,4 +190,4 @@ l,lr = gdd2len(gdd,n,aoi,l0)
 x_allowed = lr*np.sin(alpha*np.pi/180)/2
 plt.figure(3)
 plt.plot(aoi,x_allowed)
-'''
+
