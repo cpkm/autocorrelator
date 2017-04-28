@@ -22,7 +22,7 @@ function varargout = autocorrelatorGUI(varargin)
 
 % Edit the above text to modify the response to help autocorrelatorGUI
 
-% Last Modified by GUIDE v2.5 24-Aug-2015 16:41:46
+% Last Modified by GUIDE v2.5 28-Apr-2017 14:30:24
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -236,7 +236,11 @@ set(handles.titlevel,'string',['Velocity (' char(181) 'm/s)'])
 set(handles.titleaccel,'string',['Acceleration (' char(181) 'm/s' char(178) ')'])
 set(handles.titlestep,'string',['Step size (' char(181) 'm'])
 set(handles.titlenumsteps,'string','Number of steps')
-set(handles.functiontext,'string','a(1)*exp(-(x-a(2))^2/(2*a(3)^2))+a(4)')
+%set(handles.functiontext,'string','a(1)*exp(-(x-a(2))^2/(2*a(3)^2))+a(4)')
+
+axes(handles.axes1)
+xlabel('Position (um)')
+ylabel('Power (W)')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -800,9 +804,11 @@ for i = 1:numel(pos)
         end
         handles.signal(i) = handles.photonum(1)/handles.photonum(2);
     end
-
+    
+    hold on
     plot(handles.actualpos(1:i),handles.signal(1:i),'.')
     xlim([pos(1) pos(end)])
+    hold off
     
 end
 
@@ -859,8 +865,28 @@ set(handles.center,'string',num2str(handles.bestparam(2)))
 set(handles.sigma,'string',num2str(handles.bestparam(3)))
 set(handles.offset,'string',num2str(handles.bestparam(4)))
 
-plot(handles.actualpos,handles.handles.signal,'.',handles.actualpos,handles.func,'Color','b') % Plot Int vs pos (whole array)
+plot(handles.actualpos,handles.signal,'.',handles.actualpos,handles.func,'Color','b') % Plot Int vs pos (whole array)
 xlim([handles.actualpos(1) handles.actualpos(end)])
+xlabel('Position (um)')
+ylabel('Power (W)')
+
+set(handles.sig_text_um,'string',num2str(handles.bestparam(3)))
+set(handles.sig_text_ps,'string',num2str(pos2del(handles.bestparam(3))))
+
+if strcmpi('Gaussian',type)
+    correctionfactor = sqrt(2); % Autocorrelation trace is longer that the pulse by this factor
+    acfwhm = 2*sqrt(2*log(2))*pos2del(handles.bestparam(3));
+elseif strcmpi('Sech2',type)
+    correctionfactor = 1.54; % Autocorrelation trace is longer that the pulse by this factor
+    acfwhm = 1.76*pos2del(handles.bestparam(3));
+else
+    acfwhm=0;
+    correctionfactor= 1;
+end
+fwhm = acfwhm/correctionfactor;
+set(handles.fwhm_text_ps,'string',num2str(fwhm))
+set(handles.acfwhm_text_ps,'string',num2str(acfwhm))
+
 guidata(hObject, handles)
 
 
@@ -1151,7 +1177,7 @@ function savebutton_Callback(hObject, eventdata, handles)
          case 'Cancel'
              
          case 'Select'
-             dirname = uigetdir('c:\', 'Select folder');
+             dirname = uigetdir(pwd, 'Select folder');
              set(handles.savingfolder,'string',dirname)
              try
                  savescan(handles);
@@ -1162,7 +1188,23 @@ function savebutton_Callback(hObject, eventdata, handles)
  else
      try
          savescan(handles);
-     catch
+     catch err
+         display(err)
          errordlg('Error saving file');
      end
  end
+
+
+% --- Executes on button press in pushbutton9.
+function pushbutton9_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+dirname = uigetdir(pwd, 'Select folder');
+set(handles.savingfolder,'string',dirname);
+
+
+function time = pos2del(x)
+c = 299.792458; % in um/ps
+aoi = 15;
+time = x*(2/(c*cos(aoi*pi()/180)));
