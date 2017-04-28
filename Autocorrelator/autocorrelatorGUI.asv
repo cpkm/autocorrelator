@@ -750,6 +750,7 @@ for i = 1:numel(pos)
 
     %stop scan on kill, must be directly before go_Callback()
     if get(handles.kill,'Value')==1
+        display('kill')
         break
     end
     go_Callback(hObject, eventdata, handles); % Go to go_Callback function

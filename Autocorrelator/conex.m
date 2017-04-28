@@ -1,14 +1,14 @@
 % CLIENT connect to a server and read a message
 %
 % Usage - message = client(host, port, number_of_retries)
-function [answer input_socket] = conex(host, port, msg, input_socket)
+function [answer input_socket] = conex(host, port, msg, rsp, input_socket)
 
     import java.net.Socket
     import java.io.*
 
-    TIMEOUT = 2
+    TIMEOUT = 2;
      
-    if nargin < 4
+    if nargin < 5
         input_socket = [];
     end
         number_of_retries = 1; % set to -1 for infinite
@@ -51,10 +51,13 @@ function [answer input_socket] = conex(host, port, msg, input_socket)
 
                 % read data from the socket - wait a short time first
                 %pause(0.5);
+                if ~rsp
+                    break
+                end
                 bytes_available=0;
                 tic
                 
-                while(bytes_available==0)
+                while bytes_available==0
                     bytes_available = input_stream.available;
                     if(toc>=TIMEOUT)
                         break
@@ -62,7 +65,7 @@ function [answer input_socket] = conex(host, port, msg, input_socket)
                 end
                 pause(0.1)
                 
-                if(bytes_available>0)
+                if bytes_available>0
                     for i = 1:bytes_available
                      response(i) = d.read;
                     end
