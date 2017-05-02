@@ -54,4 +54,4 @@ end
 %set(handles.filenametext,'string',[name ext])
 save(fullpathup, 'all', '-ascii', '-tabs');
 
-msgbox('Save successful', 'Saving scan');
+msgbox([sprintf('Save successful\n'), fullpathup], 'Saving scan');

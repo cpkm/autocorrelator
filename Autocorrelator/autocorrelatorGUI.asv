@@ -22,7 +22,7 @@ function varargout = autocorrelatorGUI(varargin)
 
 % Edit the above text to modify the response to help autocorrelatorGUI
 
-% Last Modified by GUIDE v2.5 01-May-2017 16:33:52
+% Last Modified by GUIDE v2.5 01-May-2017 10:46:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -96,8 +96,8 @@ if isempty(errorconex)
     isnotref = char(handles.answer);
 
     if ~isequal(isnotref(4:7),'0000')
-        str=strcat('The following errors occured:\n',isnotref(4:7));
-        errordlg(sprintf(str));
+        str=strcat('The following errors occured ',isnotref(4:7),'.');
+        errordlg(str);
     end
 
     if isequal(isnotref(8),'0') || isequal(isnotref(8:9),'10') % Homing
@@ -125,8 +125,8 @@ if isempty(errorconex)
 
         %If errors occured while homing, print these errors, too.
         if ~isequal(ishomed(4:7),'0000')
-            str=strcat('The following errors occured:\n',ishomed(4:7));
-            errordlg(sprintf(str));
+            str=strcat('the following errors occured ',ishomed(4:7),'.');
+            errordlg(str);
         end
     end
 
@@ -675,7 +675,7 @@ function step_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of step as text
 %        str2double(get(hObject,'String')) returns contents of step as a double
 update_timewindow(handles);
-set(handles.stepfs,'String', [num2str(1000*pos2del(str2double(get(hObject,'String')))) ' fs']);
+set(handles.stepfs,'String', num2str(pos2del));
 
 % --- Executes during object creation, after setting all properties.
 function step_CreateFcn(hObject, eventdata, handles)
@@ -1212,12 +1212,12 @@ function update_timewindow(handles)
 dx = str2double((get(handles.step, 'String')));
 N = str2double((get(handles.numstep, 'String')));
 t_time = pos2del(N*dx);
+set(handles.windowps, 'String', num2str(t_time));
 set(handles.windowum, 'String', num2str(N*dx));
-set(handles.windowps, 'String', [num2str(t_time) ' ps']);
 
 
 % --- Executes during object creation, after setting all properties.
-function windowum_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to windowum (see GCBO)
+function timewindow_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to timewindow (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
