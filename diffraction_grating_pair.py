@@ -130,7 +130,7 @@ d1 = symDisp(l0,n,aoi,lam)
 
 print(d0,'\n',d1, '\n', beta2(n,aoi,lam))
 
-'''
+
 aoi = np.linspace(35,90,50)
 l0 = 1030E-9
 dl = 10E-9
@@ -191,3 +191,4 @@ x_allowed = lr*np.sin(alpha*np.pi/180)/2
 plt.figure(3)
 plt.plot(aoi,x_allowed)
 
+'''
