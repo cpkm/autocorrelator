@@ -146,9 +146,14 @@ class LoadResult:
             plt.legend()
             
     def fwhm(self, fitType):
+        '''Returns estimated FWHM of pulse, based on given fit type.
+        Note: FWHM of pulse intensity, NOT AC intensity.
+        '''
+        #autocorrelation-to-intensity
         gA2I = 1/np.sqrt(2)
         sA2I = 1/1.54
         
+        #sigma-to-fwhm
         gS2F = 2*np.sqrt(2*np.log(2))
         sS2F = 1.76
         

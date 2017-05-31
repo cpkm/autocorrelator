@@ -191,11 +191,10 @@ def background(x,y,form = 'constant'):
 
     elif form.lower() in ['quad','quadratic']:
         index = np.argmin(y)
-        
         if index == 0:
             x3 = 2*x[0]-x[-1]
             y3 = y[-1]    
-        elif index == len(y):
+        elif index == len(y)-1:
             x3 = 2*x[-1]-x[0]
             y3 = y[0]   
         else:
@@ -359,7 +358,7 @@ for file in file_path:
     y = y[nanmap]
     
     fitform = 'all'    
-    bgform = 'const'
+    bgform = 'quad'
     
     popt,pcov = fitpeak(x,y,fitform, bgform = bgform)
     

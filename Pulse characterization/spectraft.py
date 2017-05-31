@@ -7,6 +7,7 @@ Created on Fri Oct  2 21:13:11 2015
 
 import pylab
 import matplotlib.pyplot as plt
+
 import scipy as sp
 import numpy as np
 import tkinter as tk
@@ -35,7 +36,7 @@ def sech2(x,a,b,c,d):
 #Initialize Tkinter window
 root = tk.Tk()
 root.withdraw()
-#Use system window to select files (single file can be selected)   
+#Use system window to select files (single file can be selected)
 file = filedialog.askopenfilename()
 root.destroy()
 
@@ -108,6 +109,7 @@ gaus_plot, = plt.plot(x,gaus(x,*poptGaus), 'b-', label = 'Gaussian '+ '%.f' % (f
 sech2_plot, = plt.plot(x, sech2(x,*poptSech2), 'r-', label = 'Sech Squared '+ '%.f' % (fwhmS*1000) +'fs')
 
 plt.legend(handles = [sech2_plot,gaus_plot])
+plt.show()
 
 #generate filename/path
 origPath, origFilename = os.path.split(file)
