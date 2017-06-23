@@ -1,2 +1,3 @@
-# misc
-there is nothing here now
+#autocorrelator
+
+This respository holds controller software for out homebuilt optical autocorrelator.
