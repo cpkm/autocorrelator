@@ -738,6 +738,7 @@ end
 
 set(handles.operation,'Value',2)
 handles.actualpos = zeros(1,numel(pos));
+handles.delay = zeros(1,numel(pos));
 handles.signal = zeros(1,numel(pos));
 
 for i = 1:numel(pos)
@@ -758,7 +759,8 @@ for i = 1:numel(pos)
     go_Callback(hObject, eventdata, handles); % Go to go_Callback function
     
     handles.actualpos(i) = str2double(get(handles.position,'string')) - refpos;
-    
+    handles.delay(i) = pos2del(handles.actualpos)
+
     if handles.powermeter == 1
     
         msg = {'SENDRCV GETPOWER'}; % Creates a command to get power from powermeter
@@ -1206,7 +1208,7 @@ set(handles.savingfolder,'string',dirname);
 function time = pos2del(x)
 c = 299.792458; % in um/ps
 aoi = 15;
-time = x*(2/(c*cos(aoi*pi()/180)));
+time = 2*x*cos(aoi*pi()/180)/c;
 
 function update_timewindow(handles)
 dx = str2double((get(handles.step, 'String')));

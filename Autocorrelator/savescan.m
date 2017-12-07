@@ -6,7 +6,7 @@ function savescan(handles)
 %     all = [handles.actualpos; handles.signal]';
 % end
 
-all=[handles.actualpos; handles.signal]';
+all=[handles.actualpos; handles.delay; handles.signal]';
 fullfolder = get(handles.savingfolder,'string');
 
 if isempty(get(handles.filenametext,'string'))
