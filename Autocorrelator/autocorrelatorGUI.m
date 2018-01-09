@@ -805,7 +805,7 @@ for i = 1:numel(pos)
     
     hold on
     plot(handles.actualpos(1:i),handles.signal(1:i),'b.')
-    if numel(pos) > 1 && i==1
+    if numel(pos) > 1
         xlim([pos(1) pos(end)])
     end
     hold off
