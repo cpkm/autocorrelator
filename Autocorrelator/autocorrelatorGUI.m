@@ -477,27 +477,31 @@ if isempty(destum) ~= 1 % If destum is 0 (not destination set) do nothing
 
                 i=1;
                 %Tests whether the linear activator reached the home position. If not wait and try again.
-                while (i<= handles.MAXCHECKS && ~isequal(ispositionreached(8:9),'33'))
-                    if get(handles.kill,'Value') == 1 % Leave the loop if kill button is pressed
-                        i= handles.MAXCHECKS;
-                        msg = {['SENDRCV ' handles.termchar ' 1ST']}; % Creates the command to stop the motor
-                        [handles.answer handles.input_socketconex] = conex(handles.computeripconex,handles.serialserversocketport,msg,true,handles.input_socketconex);                    
+                try
+                    while (i<= handles.MAXCHECKS && ~isequal(ispositionreached(8:9),'33'))
+                        if get(handles.kill,'Value') == 1 % Leave the loop if kill button is pressed
+                            i= handles.MAXCHECKS;
+                            msg = {['SENDRCV ' handles.termchar ' 1ST']}; % Creates the command to stop the motor
+                            [handles.answer handles.input_socketconex] = conex(handles.computeripconex,handles.serialserversocketport,msg,true,handles.input_socketconex);
+                        end
+                        
+                        msg = {['SENDRCV ' handles.termchar ' ' '1TS']}; % Creates a command to get positioner error and controller state
+                        [handles.answer handles.input_socketconex] = conex(handles.computeripconex,handles.serialserversocketport,msg,true,handles.input_socketconex);
+                        if isempty(handles.answer)
+                            ispositionreached = '000000000';
+                        else
+                            ispositionreached=char(handles.answer);
+                        end
+                        
+                        msg = {['SENDRCV ' handles.termchar ' 1TP']}; % Creates the command to check the position
+                        [handles.answer handles.input_socketconex] = conex(handles.computeripconex,handles.serialserversocketport,msg,true,handles.input_socketconex);
+                        answer = char(handles.answer);
+                        posmm = answer(4:end-4);
+                        set(handles.position,'string',num2str(str2double(posmm)*1000,'%6.1f'));
+                        i=i+1;
                     end
-
-                    msg = {['SENDRCV ' handles.termchar ' ' '1TS']}; % Creates a command to get positioner error and controller state
-                    [handles.answer handles.input_socketconex] = conex(handles.computeripconex,handles.serialserversocketport,msg,true,handles.input_socketconex);
-                    if isempty(handles.answer)
-                        ispositionreached = '000000000';
-                    else
-                        ispositionreached=char(handles.answer);
-                    end
-
-                    msg = {['SENDRCV ' handles.termchar ' 1TP']}; % Creates the command to check the position
-                    [handles.answer handles.input_socketconex] = conex(handles.computeripconex,handles.serialserversocketport,msg,true,handles.input_socketconex);
-                    answer = char(handles.answer);
-                    posmm = answer(4:end-4);
-                    set(handles.position,'string',num2str(str2double(posmm)*1000,'%6.1f'));
-                    i=i+1;
+                catch
+                    warning('Unexpected position response from CONNEX');
                 end
             end
 
@@ -725,16 +729,9 @@ set(handles.scanbutton,'enable','off')
 
 step = str2double(get(handles.step,'string'));
 numsteps = str2double(get(handles.numstep,'string'));
+p = (numsteps-1)*step/2;
 
-posp = 0:step:numsteps*step/2;
-R = rem(numsteps,2);
-if R
-    posn = -fliplr(posp(2:end));
-    pos = [posn posp];
-else
-    posn = -fliplr(posp(2:end-1));
-    pos = [posn posp];
-end
+pos = linspace(-p,p,numsteps);
 
 set(handles.operation,'Value',2)
 handles.actualpos = zeros(1,numel(pos));
@@ -759,7 +756,7 @@ for i = 1:numel(pos)
     go_Callback(hObject, eventdata, handles); % Go to go_Callback function
     
     handles.actualpos(i) = str2double(get(handles.position,'string')) - refpos;
-    handles.delay(i) = pos2del(handles.actualpos)
+    handles.delay(i) = pos2del(handles.actualpos(i));
 
     if handles.powermeter == 1
     
@@ -807,8 +804,10 @@ for i = 1:numel(pos)
     end
     
     hold on
-    plot(handles.actualpos(1:i),handles.signal(1:i),'.')
-    xlim([pos(1) pos(end)])
+    plot(handles.actualpos(1:i),handles.signal(1:i),'b.')
+    if numel(pos) > 1 && i==1
+        xlim([pos(1) pos(end)])
+    end
     hold off
     
 end
