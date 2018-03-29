@@ -130,9 +130,9 @@ if isempty(errorconex)
         end
     end
 
-    %%%% Move the linear activator to the position 14mm
+    %%%% Move the linear activator to the position 13mm
 
-    msg = {['SENDRCV ' handles.termchar ' ' '1PA14'],['SENDRCV ' handles.termchar ' ' '1TS']}; % Creates a command to move absolute 2 mm
+    msg = {['SENDRCV ' handles.termchar ' ' '1PA13'],['SENDRCV ' handles.termchar ' ' '1TS']}; % Creates a command to move absolute 2 mm
     [handles.answer handles.input_socketconex] = conex(handles.computeripconex,handles.serialserversocketport,msg,true,handles.input_socketconex);
 
     ispositionreached=char(handles.answer);
@@ -1207,7 +1207,8 @@ set(handles.savingfolder,'string',dirname);
 function time = pos2del(x)
 c = 299.792458; % in um/ps
 aoi = 15;
-time = 2*x*cos(aoi*pi()/180)/c;
+%time = 2*x*cos(aoi*pi()/180)/c;
+time = x*(1+cos(aoi*pi()/180))/c;
 
 function update_timewindow(handles)
 dx = str2double((get(handles.step, 'String')));
