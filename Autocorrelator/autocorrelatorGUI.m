@@ -1208,7 +1208,7 @@ function time = pos2del(x)
 c = 299.792458; % in um/ps
 aoi = 15;
 %time = 2*x*cos(aoi*pi()/180)/c;
-time = x*(1+cos(aoi*pi()/180))/c;
+time = 2*x;
 
 function update_timewindow(handles)
 dx = str2double((get(handles.step, 'String')));
