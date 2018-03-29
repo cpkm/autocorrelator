@@ -56,7 +56,7 @@ function autocorrelatorGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 
 handles.computeripconex = 'localhost'; % Set server computer IP or URL for Conex
 handles.instrumentname = 'Conex';
-handles.conexcommport = 'COM3'; % Set server serial port for Conex server
+handles.conexcommport = 'COM4'; % Set server serial port for Conex server
 handles.serialserversocketport = 32000; % Set server socket port for Conex server
 handles.baudrate = '921600'; % Set baudrate for Conex server
 handles.bits = 8; % Set data bits for Conex server
@@ -130,9 +130,9 @@ if isempty(errorconex)
         end
     end
 
-    %%%% Move the linear activator to the position 6mm
+    %%%% Move the linear activator to the position 14mm
 
-    msg = {['SENDRCV ' handles.termchar ' ' '1PA6'],['SENDRCV ' handles.termchar ' ' '1TS']}; % Creates a command to move absolute 2 mm
+    msg = {['SENDRCV ' handles.termchar ' ' '1PA14'],['SENDRCV ' handles.termchar ' ' '1TS']}; % Creates a command to move absolute 2 mm
     [handles.answer handles.input_socketconex] = conex(handles.computeripconex,handles.serialserversocketport,msg,true,handles.input_socketconex);
 
     ispositionreached=char(handles.answer);
