@@ -22,7 +22,7 @@ function varargout = autocorrelatorGUI(varargin)
 
 % Edit the above text to modify the response to help autocorrelatorGUI
 
-% Last Modified by GUIDE v2.5 01-May-2017 16:33:52
+% Last Modified by GUIDE v2.5 09-May-2018 12:27:58
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -238,9 +238,10 @@ set(handles.titlestep,'string',['Step size (' char(181) 'm)'])
 set(handles.titlenumsteps,'string','Number of steps')
 %set(handles.functiontext,'string','a(1)*exp(-(x-a(2))^2/(2*a(3)^2))+a(4)')
 
-axes(handles.axes1)
+axes(handles.ax1)
 xlabel('Position (um)')
 ylabel('Power (W)')
+handles.ax2.XLabel.String = 'Delay (ps)';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -804,11 +805,13 @@ for i = 1:numel(pos)
     end
     
     hold on
-    plot(handles.actualpos(1:i),handles.signal(1:i),'b.')
+    plot(handles.ax1,handles.actualpos(1:i),handles.signal(1:i),'b.')
     if numel(pos) > 1
         xlim([pos(1) pos(end)])
+        set(handles.ax2, 'XLim', pos2del(get(handles.ax1, 'XLim')))
     end
     hold off
+    guidata(hObject, handles)
     
 end
 
@@ -865,10 +868,13 @@ set(handles.center,'string',num2str(handles.bestparam(2)))
 set(handles.sigma,'string',num2str(handles.bestparam(3)))
 set(handles.offset,'string',num2str(handles.bestparam(4)))
 
-plot(handles.actualpos,handles.signal,'.',handles.actualpos,handles.func,'Color','b') % Plot Int vs pos (whole array)
+plot(handles.ax1,handles.actualpos,handles.signal,'.',handles.actualpos,handles.func,'Color','b') % Plot Int vs pos (whole array)
 xlim([handles.actualpos(1) handles.actualpos(end)])
 xlabel('Position (um)')
 ylabel('Power (W)')
+set(handles.ax2, 'XLim', pos2del(get(handles.ax1, 'XLim')))
+handles.ax2.XLabel.String = 'Delay (ps)';
+guidata(hObject, handles)
 
 set(handles.sig_text_um,'string',num2str(handles.bestparam(3)))
 set(handles.sig_text_ps,'string',num2str(pos2del(handles.bestparam(3))))
@@ -1207,14 +1213,16 @@ set(handles.savingfolder,'string',dirname);
 function time = pos2del(x)
 c = 299.792458; % in um/ps
 aoi = 15;
+%translate along mirror norm
 %time = 2*x*cos(aoi*pi()/180)/c;
-time = 2*x;
+%translate along incident beam axis
+time = 2*x/c;
 
 function update_timewindow(handles)
 dx = str2double((get(handles.step, 'String')));
 N = str2double((get(handles.numstep, 'String')));
-t_time = pos2del(N*dx);
-set(handles.windowum, 'String', num2str(N*dx));
+t_time = pos2del((N-1)*dx);
+set(handles.windowum, 'String', num2str((N-1)*dx));
 set(handles.windowps, 'String', [num2str(t_time) ' ps']);
 
 
