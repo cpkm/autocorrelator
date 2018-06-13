@@ -4,4 +4,4 @@ This respository holds controller software for our homebuilt optical autocorrela
 
 ## Setup
 
-Drivers for the CONEX-CC translation stage must be up to date.
+Drivers for the CONEX-CC translation stage and Thorlabs power meter must be up to date.
