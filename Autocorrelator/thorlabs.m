@@ -61,7 +61,7 @@ function [answer input_socket] = thorlabs(host, port, msg, input_socket)
                         break
                     end
                 end
-                pause(0.1)
+                %pause(0.3)
 
                 if(bytes_available>0)
                     for i = 1:bytes_available
@@ -70,7 +70,7 @@ function [answer input_socket] = thorlabs(host, port, msg, input_socket)
                 end
                 % cleanup
                 if exist('response') ~= 0
-                    answer = [answer, {char(response(1:bytes_available))}];
+                    answer = [answer, {char(response)}];
                 end
             end
             if strcmp(msg(1),'QUIT') == 1
