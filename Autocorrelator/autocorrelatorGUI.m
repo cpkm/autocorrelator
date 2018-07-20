@@ -739,8 +739,12 @@ handles.actualpos = zeros(1,numel(pos));
 handles.delay = zeros(1,numel(pos));
 handles.signal = zeros(1,numel(pos));
 
-for i = 1:numel(pos)
+tic
+bar = rectangle('Parent',handles.waitbar,'Position', [0, 0, toc/t, 1], 'FaceColor','r');
+tex = text('Parent',handles.waitbar,'String',num2str(toc/t),'Position', [0.5, 0.5]);
 
+for i = 1:numel(pos)
+    
     if i == 1
         set(handles.destination,'string',num2str(pos(1),'%6.1f'))
         set(handles.direction,'Value',2)
@@ -813,7 +817,14 @@ for i = 1:numel(pos)
     hold off
     guidata(hObject, handles)
     
+    est_time = numel(pos)*toc/i;
+    tex_string = ['Time remaining: ' num2str(est_time, '%.0f') ' seconds.'];
+    set(bar,'Position', [0, 0, i/numel(pos), 1])
+    set(tex, 'String',tex_string);
+    
 end
+
+set(tex, 'String',['Total scan time: ' num2str(toc, '%.1f') 's']);
 
 %move stage back to reference position
 set(handles.destination,'string',num2str(refpos,'%6.1f'))
